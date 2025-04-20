@@ -3,12 +3,23 @@ from utils.s3_handler import read_csv_from_s3, write_csv_to_s3, write_json_to_s3
 from datetime import datetime
 from schema_registry import SCHEMAS
 
+import logging
+import os
+
+# Create logs directory if not exist
+os.makedirs("logs", exist_ok=True)
+
+# Configure logging
+logging.basicConfig(
+    filename="logs/error_log.txt",         # Path to your local log file
+    filemode="a",                          # Append mode
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO                     # Could also be DEBUG or ERROR
+)
 
 class BaseProcessor:
-    def process_file(self, bucket_name, input_key, output_prefix, log_path):
-        df = read_csv_from_s3(bucket_name, input_key)
-        original_count = len(df)
 
+    def clean_data(self, df,input_key):
         # Extract module name
         file_name = input_key.split("/")[-1].lower()
         module_name = file_name.split("-")[0]
@@ -19,27 +30,10 @@ class BaseProcessor:
             actual_headers = list(df.columns)
             if not compare_headers(expected_headers, actual_headers):
                 raise ValueError(
-                    f"Header mismatch for {module_name}.\nExpected: {expected_headers}\nFound: {actual_headers}")
-
-        df = self.clean_data(df)
-        cleaned_count = len(df)
+                    f"Header mismatch for {module_name}.\nExpected: {expected_headers}\nFound: {actual_headers}",
+                    logging.error(f"Header mismatch for {module_name}.\nExpected: {expected_headers}\nFound: {actual_headers}", exc_info=True))
 
 
-        output_key = f"{output_prefix}{file_name}"
-        write_csv_to_s3(df, bucket_name, output_key)
-
-        ## Prepare log entry
-        log_entry = {
-            "file": input_key,
-            "raw_rows_loaded": original_count,
-            "rows_after_cleaning": cleaned_count,
-            "saved_to": output_key,
-            "processed_at": datetime.now().isoformat()
-        }
-
-        write_json_to_s3(bucket_name, log_path, log_entry)
-
-    def clean_data(self, df):
         df = standardize_headers(df)
         df = drop_empty_rows_cols(df)
         df = drop_duplicate_rows(df)
@@ -47,3 +41,7 @@ class BaseProcessor:
         df = parse_and_set_session_column(df)
         df = convert_numeric_columns(df)
         return df
+
+
+
+
