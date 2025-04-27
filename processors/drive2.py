@@ -1,6 +1,6 @@
 from .base_processor import BaseProcessor
 
 class Drive2Processor(BaseProcessor):
-    def process(self):
-        super().process()
-        return self.df
+    def process(self,df, input_key):
+        df = super().clean_data(df, input_key)
+        return df

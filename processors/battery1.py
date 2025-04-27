@@ -1,7 +1,7 @@
 from .base_processor import BaseProcessor
 
 class Battery1Processor(BaseProcessor):
-    def process(self):
-        super().process()
-        self.df.drop(columns=[col for col in self.df.columns if 'unnamed' in col.lower()], inplace=True, errors='ignore')
-        return self.df
+    def process(self, df, input_key):
+        df = super().clean_data(df,input_key)
+        df.drop(columns=[col for col in df.columns if 'unnamed' in col.lower()], inplace=True, errors='ignore')
+        return df

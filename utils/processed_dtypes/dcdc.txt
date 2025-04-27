@@ -1,0 +1,8 @@
+"datetime": "datetime64[ns]",
+"currout": "int64",
+"voltout": "int64",
+"temp": "int64",
+"enabled": "int64",
+"voltsetpoint": "int64",
+"inputcurr": "int64",
+"inputvolt": "int64",
