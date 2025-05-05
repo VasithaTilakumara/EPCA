@@ -69,10 +69,13 @@ def read_parquet_from_s3(bucket: str, key: str, engine: str = 'pyarrow') -> pd.D
 #     df.to_csv(buffer, index=False)
 #     s3.put_object(Bucket=bucket, Key=key, Body=buffer.getvalue())
 
-def write_parquet_to_s3(df, bucket, key):
-    # Convert DataFrame to Arrow Table
-    table = pa.Table.from_pandas(df)
+def write_parquet_to_s3(df, bucket, key, module_name):
 
+    if df is None:
+        raise ValueError("❌ DataFrame (df) passed to write_parquet_to_s3() is None!")
+
+    table = pa.Table.from_pandas(df)
+    # print(f"table: {table}")
     # Write the Parquet data to an in-memory buffer
     buffer = io.BytesIO()
     pq.write_table(table, buffer, compression='snappy')

@@ -134,14 +134,14 @@ def run_etl_on_folder(folder):
     for key in csv_files:
         filename = key.split("/")[-1]
         session_name = extract_session_from_filename(filename)
-        print(f"session name: {session_name}")
+        # print(f"session name: {session_name}")
         output_prefix = f"processed/{folder}/session={session_name}/"
         # log_prefix = f"processed/logs/{folder}/session={session_name}/"
-        print(f"output prefix: {output_prefix}")
+        # print(f"output prefix: {output_prefix}")
         if key in processed_files:
             print(f"⏩ Skipping already processed file: {key}")
             continue
-        print(f"key: {key}")
+        # print(f"key: {key}")
         try:
             output_key = process_file(processor_class, BUCKET_NAME, key, session_name,output_prefix, log_key)
 
@@ -161,7 +161,7 @@ def main():
     folders = get_top_level_folders(BUCKET_NAME)
     print(f"Found folders: {folders}")
     for folder in folders:
-        if "_input" not in folder and ("auxiliary" in folder):
+        if "_input" not in folder and ("vehicle" in folder):
             run_etl_on_folder(folder)
 
 if __name__ == "__main__":

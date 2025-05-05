@@ -1,5 +1,5 @@
 {
-    "processed/battery1": {
+    "battery1": {
         "datetime": "datetime64[ns]",
         "isoqui": "int64",
         "hwconffau": "int64",
@@ -71,7 +71,7 @@
         "swver": "int64",
         "source_file": "object"
     },
-    "processed/chargecontroller1": {
+    "chargecontroller1": {
         "datetime": "datetime64[ns]",
         "pp": "int64",
         "cp": "int64",
@@ -126,7 +126,7 @@
         "shutdownreq": "int64",
         "source_file": "object"
     },
-    "processed/chiller1": {
+    "chiller1": {
         "datetime": "datetime64[ns]",
         "hypstat": "float64",
         "hyptimeout": "float64",
@@ -174,7 +174,7 @@
         "cooltlvl": "float64",
         "source_file": "object"
     },
-    "processed/ccl1": {
+    "ccl1": {
         "datetime": "datetime64[ns]",
         "pp": "int64",
         "cp": "int64",
@@ -229,7 +229,7 @@
         "shutdownreq": "int64",
         "source_file": "object"
     },
-    "processed/dcdc": {
+    "dcdc": {
         "datetime": "datetime64[ns]",
         "currout": "int64",
         "voltout": "int64",
@@ -240,7 +240,7 @@
         "inputvolt": "int64",
         "source_file": "object"
     },
-    "processed/drive1": {
+    "drive1": {
         "datetime": "datetime64[ns]",
         "modatemp": "float64",
         "modbtemp": "float64",
@@ -341,7 +341,7 @@
         "parrespdat": "int64",
         "source_file": "object"
     },
-    "processed/drive2": {
+    "drive2": {
         "datetime": "datetime64[ns]",
         "modatemp": "float64",
         "modbtemp": "float64",
@@ -442,7 +442,7 @@
         "parrespdat": "float64",
         "source_file": "object"
     },
-    "processed/vehicle": {
+    "vehicle": {
         "datetime": "datetime64[ns]",
         "plc_hb": "int64",
         "24volt": "int64",
@@ -534,7 +534,7 @@
         "shutdownsafe": "float64",
         "fault": "object"
     },
-    "processed/auxiliary": {
+    "auxiliary": {
         "datetime": "datetime64[ns]",
         "cansigacttorq": "float64",
         "dcbuscurr": "float64",

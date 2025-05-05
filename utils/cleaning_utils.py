@@ -45,11 +45,9 @@ def convert_numeric_columns(df):
     for col in df.columns:
         if col != 'datetime':
             try:
-                df[col] = pd.to_numeric(df[col])
-                # if col == "shutdownsafe" and df[col].dtype == object:
-                #     df[col] = pd.to_numeric(df[col], errors='coerce')
+                df[col] = pd.to_numeric(df[col]).astype('float64')
             except Exception:
-                continue
+                print(f"Could not convert {col} to float64")
     return df
 
 def compare_headers(expected, actual):
@@ -68,7 +66,7 @@ def assign_dtypes(df, module_name):
         pd.DataFrame: DataFrame with corrected dtypes
     """
     # Load your JSON schema once
-    with open("utils/sampled_schema_summary.json", "r") as f:
+    with open("utils/processed_files_scheme.json", "r") as f:
         SCHEMA_TYPES = json.load(f)
 
     print(f"Assigning dtypes to '{module_name}'...")
@@ -85,9 +83,9 @@ def assign_dtypes(df, module_name):
 
         try:
             if dtype.startswith("float"):
-                df[col] = pd.to_numeric(df[col], errors='coerce')
+                df[col] = pd.to_numeric(df[col], errors='coerce').astype('float64')
             elif dtype.startswith("int"):
-                df[col] = pd.to_numeric(df[col], errors='coerce', downcast='integer')
+                df[col] = pd.to_numeric(df[col], errors='coerce').astype('int64')
             elif dtype == "object":
                 df[col] = df[col].astype(str)
             else:

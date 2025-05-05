@@ -1,5 +1,7 @@
 import pandas as pd
 from datetime import datetime
+
+from utils.cleaning_utils import convert_numeric_columns
 from utils.s3_handler import read_csv_from_s3, write_parquet_to_s3, write_json_to_s3, append_json_log_to_s3
 from processors.auxiliary import AuxiliaryProcessor
 from processors.vehicle import VehicleProcessor
@@ -27,22 +29,30 @@ def process_file(processor_class,bucket, key, session_name,output_prefix, log_pr
         # subfolder = output_prefix.split('/')[1] if '/' in key else ''
         subfolder = Path(output_prefix).parent.name
         processor = processor_class()
-        # print(processor)
+        print(f"processor:{processor}")
 
         if processor is None:
             print(f"No processor found for subfolder: {subfolder}. Skipping file: {key}")
             return
 
-        cleaned_df = processor.clean_data(df,key)
+        cleaned_df = processor.process(df,key)
+        # print(f"cleaned_df:{cleaned_df}")
+        # cleaned_df = convert_numeric_columns(cleaned_df)
         cleaned_df['session'] = session_name
+        if  'isoqui' in cleaned_df.columns:
+            print(f"dtype  isoqui: {cleaned_df['isoqui'].dtype}")
+
         cleaned_count = len(cleaned_df)
         print(f"Processed {cleaned_count} records")
         # Save cleaned file
         filename = key.split("/")[-1]
+        module_name = Path(key).parent.name
+        # print(f"key:{key} filename:{filename}")
         parquet_filename = filename.replace(".csv", ".parquet")
         output_key = f"{output_prefix}{parquet_filename}"
         print(f"Writing {cleaned_count} records to {parquet_filename}")
-        write_parquet_to_s3(cleaned_df, bucket, output_key)
+
+        write_parquet_to_s3(cleaned_df, bucket, output_key,module_name)
 
         # Save log
         log_data = {

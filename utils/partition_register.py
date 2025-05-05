@@ -3,7 +3,6 @@ from pyathena import connect
 def extract_session_from_filename(filename):
     # try:
         parts = filename.split("-")
-        print(f"parts: {parts}")
         # Expected: ['Auxiliary', '2024', '8', '28', '14', '12', '58']
         if len(parts) >= 7:
             year, month, day, hour, minute, second = parts[1:7]

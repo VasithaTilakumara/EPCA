@@ -1,0 +1,12 @@
+[
+  {"Name": "datetime", "Type": "timestamp"},
+  {"Name": "currout", "Type": "double"},
+  {"Name": "voltout", "Type": "double"},
+  {"Name": "temp", "Type": "double"},
+  {"Name": "enabled", "Type": "double"},
+  {"Name": "voltsetpoint", "Type": "double"},
+  {"Name": "inputcurr", "Type": "double"},
+  {"Name": "inputvolt", "Type": "double"},
+  {"Name": "source_file", "Type": "string"},
+  {"Name": "session", "Type": "string", "PartitionKey": true}
+]

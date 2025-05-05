@@ -22,10 +22,6 @@ class BaseProcessor:
     def clean_data(self, df,input_key):
         # Extract module name
         module_name = input_key.split("/")[0].lower()
-        # if "-" in file_name:
-        #     module_name = file_name.split("-")[0]
-        # elif "." in file_name:
-        #     module_name = file_name.split(".")[0]
 
 
         # Validate schema
@@ -43,8 +39,10 @@ class BaseProcessor:
         df = drop_duplicate_rows(df)
         df = remove_null_timestamps(df)
         df = parse_and_set_datetime_column(df)
-        # df = convert_numeric_columns(df)
-        df = assign_dtypes(df, module_name)
+        df = convert_numeric_columns(df)
+        # df = assign_dtypes(df, module_name)
+        # print(df.dtypes)
+        # df = df.reset_index(drop=True)
         # print(f"trip:{df["trip"]}")
         return df
 
